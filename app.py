@@ -18,7 +18,7 @@ def create_app():
         [unique_leagues.append(x) for x in leagues if x not in unique_leagues]
         return unique_leagues, matches
 
-    def get_pronos(home_team, away_team):
+    def get_pronos(home_team, away_team, date, referree):
         return {}
 
     @app.route('/')
@@ -31,7 +31,8 @@ def create_app():
             leagues, matches = get_matches()
             all_pronos = []
             for match in matches:
-                pronos = get_pronos(match['homeTeam']['name'], match['awayTeam']['name'])
+                pronos = get_pronos(match['homeTeam']['name'], match['awayTeam']['name']
+                                    , match['utcDate'], match['referees']['name'])
                 match['homeTeam']['pronos'] = pronos['homeTeam']
                 match['awayTeam']['pronos'] = pronos['awayTeam']
                 all_pronos.append(match)
@@ -39,8 +40,7 @@ def create_app():
             return jsonify({
                 'success': True,
                 'matches': all_pronos,
-                'leagues': leagues,
-
+                'leagues': leagues
             })
         except Exception as e:
             abort(500, f'{type(e)}: {e}')
