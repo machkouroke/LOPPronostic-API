@@ -49,7 +49,13 @@ def create_app():
     @app.route('/test')
     def test():
         leagues, matches = get_matches()
-        return render_template('test.html', leagues=leagues, matches=matches)
+        return jsonify({
+            'success': True,
+            'matches': matches,
+            'league': leagues
+
+        })
+        # return render_template('test.html', leagues=leagues, matches=matches)
 
     return app
 
