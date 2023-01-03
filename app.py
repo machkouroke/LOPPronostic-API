@@ -1,10 +1,17 @@
 import requests
+from flask_cors import CORS
 from flask import Flask, render_template, abort, jsonify
 
 
 def create_app():
     app = Flask(__name__)
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
+    @app.after_request
+    def after_request(response):
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
+        return response
     def get_matches():
         uri = 'https://api.football-data.org/v4/matches'
         headers = {'X-Auth-Token': '3d6e6f89c3e244e4813c0c44a32fd80b'}
