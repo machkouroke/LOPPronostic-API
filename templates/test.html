@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Affichage des matchs</title>
+</head>
+<body>
+    <div class="title">
+    {% for league in leagues %}
+        <p>{{ league.name }}</p>
+         {% for match in matches %}
+             {% if league.name==match.competition.name %}
+             <p>
+                <span>{{ match.utcDate }} </span>
+                 <span style="background-color:green;">{{ match.status }} </span>
+                 <img src="{{ match.homeTeam.crest }}" alt="" height="15px">
+                <span> {{ match.homeTeam.name }} VS </span>
+                <span>{{ match.awayTeam.name }} </span>
+                <img src="{{ match.awayTeam.crest }}" alt="" height="15px">
+             </p>
+             {% endif %}
+         {% endfor %}
+    {% endfor %}
+    </div>
+</body>
+</html>
