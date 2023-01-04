@@ -12,6 +12,7 @@ def create_app():
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,POST,DELETE,OPTIONS')
         return response
+
     def get_matches():
         uri = 'https://api.football-data.org/v4/matches'
         headers = {'X-Auth-Token': '3d6e6f89c3e244e4813c0c44a32fd80b'}
@@ -56,11 +57,23 @@ def create_app():
     @app.route('/test')
     def test():
         leagues, matches = get_matches()
+        list_matches = []
+        for match in matches:
+            match_reduced = {}
+            match_reduced.update({'competition': {'name': match['competition']['name'],
+                                                  'logo': match['competition']['emblem']},
+                                  'homeTeam': {'name': match['homeTeam']['name'],
+                                                  'logo': match['homeTeam']['crest']},
+                                  'awayTeam': {'name': match['awayTeam']['name'],
+                                               'logo': match['awayTeam']['crest']},
+                                  'date': match['utcDate']
+                                  })
+
+            list_matches.append(match_reduced)
         return jsonify({
             'success': True,
-            'matches': matches,
+            'matches': list_matches,
             'league': leagues
-
         })
         # return render_template('test.html', leagues=leagues, matches=matches)
 
