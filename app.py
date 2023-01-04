@@ -59,17 +59,18 @@ def create_app():
         leagues, matches = get_matches()
         list_matches = []
         for match in matches:
-            match_reduced = {}
-            match_reduced.update({'competition': {'name': match['competition']['name'],
-                                                  'logo': match['competition']['emblem']},
-                                  'homeTeam': {'name': match['homeTeam']['name'],
-                                                  'logo': match['homeTeam']['crest']},
-                                  'awayTeam': {'name': match['awayTeam']['name'],
-                                               'logo': match['awayTeam']['crest']},
-                                  'date': match['utcDate']
-                                  })
+            if not match['status'] == 'FINISHED':
+                match_reduced = {}
+                match_reduced.update({'competition': {'name': match['competition']['name'],
+                                                      'logo': match['competition']['emblem']},
+                                      'homeTeam': {'name': match['homeTeam']['name'],
+                                                      'logo': match['homeTeam']['crest']},
+                                      'awayTeam': {'name': match['awayTeam']['name'],
+                                                   'logo': match['awayTeam']['crest']},
+                                      'date': match['utcDate']
+                                      })
 
-            list_matches.append(match_reduced)
+                list_matches.append(match_reduced)
         return jsonify({
             'success': True,
             'matches': list_matches,
