@@ -1,6 +1,7 @@
 import requests
+from flask import Flask, abort, jsonify
 from flask_cors import CORS
-from flask import Flask, render_template, abort, jsonify
+from config import X_Auth_Token
 
 
 def create_app():
@@ -15,7 +16,7 @@ def create_app():
 
     def get_matches():
         uri = 'https://api.football-data.org/v4/matches'
-        headers = {'X-Auth-Token': '3d6e6f89c3e244e4813c0c44a32fd80b'}
+        headers = {'X-Auth-Token': X_Auth_Token}
 
         leagues = []
         response = requests.get(uri, headers=headers)
@@ -59,12 +60,12 @@ def create_app():
         leagues, matches = get_matches()
         list_matches = []
         for match in matches:
-            if not match['status'] == 'FINISHED':
+            if match['status'] != 'FINISHED':
                 match_reduced = {}
                 match_reduced.update({'competition': {'name': match['competition']['name'],
                                                       'logo': match['competition']['emblem']},
                                       'homeTeam': {'name': match['homeTeam']['name'],
-                                                      'logo': match['homeTeam']['crest']},
+                                                   'logo': match['homeTeam']['crest']},
                                       'awayTeam': {'name': match['awayTeam']['name'],
                                                    'logo': match['awayTeam']['crest']},
                                       'date': match['utcDate']
@@ -76,7 +77,6 @@ def create_app():
             'matches': list_matches,
             'league': leagues
         })
-        # return render_template('test.html', leagues=leagues, matches=matches)
 
     return app
 
