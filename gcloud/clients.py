@@ -6,6 +6,7 @@ from gcloud import dataproc
 credentials = service_account.Credentials.from_service_account_file(
     GOOGLE_CREDENTIAL_PATH)
 
-jobClient = dataproc.JobControllerClient(credentials=credentials)
+jobClient = dataproc.JobControllerClient(credentials=credentials, client_options={
+    'api_endpoint': f'{GCLOUD_REGION}-dataproc.googleapis.com:443'})
 clusterClient = dataproc.ClusterControllerClient(credentials=credentials, client_options={
     'api_endpoint': f'{GCLOUD_REGION}-dataproc.googleapis.com:443'})

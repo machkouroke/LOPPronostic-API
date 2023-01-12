@@ -53,7 +53,6 @@ def create_app():
             })
         except Exception as e:
             abort(500, f'{type(e)}: {e}')
-            # raise e
 
     @app.route('/test')
     def test():
