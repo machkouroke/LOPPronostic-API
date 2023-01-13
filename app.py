@@ -17,15 +17,17 @@ def create_app():
     def get_matches():
         uri = 'https://api.football-data.org/v4/matches'
         headers = {'X-Auth-Token': X_Auth_Token}
-
-        leagues = []
         response = requests.get(uri, headers=headers)
         matches = response.json()['matches']
+        return matches
+
+    def get_leagues(matches: list):
+        leagues = []
         for match in matches:
             leagues.append(match['competition'])
         unique_leagues = []
         [unique_leagues.append(x) for x in leagues if x not in unique_leagues]
-        return unique_leagues, matches
+        return unique_leagues
 
     def get_pronos(home_team, away_team, date, referree):
         return {}
@@ -56,25 +58,26 @@ def create_app():
 
     @app.route('/test')
     def test():
-        leagues, matches = get_matches()
+        matches = get_matches()
         list_matches = []
         for match in matches:
-            if match['status'] != 'FINISHED':
-                match_reduced = {}
-                match_reduced.update({'competition': {'name': match['competition']['name'],
-                                                      'logo': match['competition']['emblem']},
-                                      'homeTeam': {'name': match['homeTeam']['name'],
-                                                   'logo': match['homeTeam']['crest']},
-                                      'awayTeam': {'name': match['awayTeam']['name'],
-                                                   'logo': match['awayTeam']['crest']},
-                                      'date': match['utcDate']
-                                      })
+            if not match['status'] == 'FINISHED':
+                if match['competition']['code'] in ['PL']:
+                    match_reduced = {}
+                    match_reduced.update({'competition': {'name': match['competition']['name'],
+                                                          'logo': match['competition']['emblem']},
+                                          'homeTeam': {'name': match['homeTeam']['name'],
+                                                          'logo': match['homeTeam']['crest']},
+                                          'awayTeam': {'name': match['awayTeam']['name'],
+                                                       'logo': match['awayTeam']['crest']},
+                                          'date': match['utcDate']
+                                          })
 
                 list_matches.append(match_reduced)
         return jsonify({
             'success': True,
             'matches': list_matches,
-            'league': leagues
+            'league': get_leagues(list_matches)
         })
 
     return app
