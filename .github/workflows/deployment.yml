@@ -24,13 +24,15 @@ jobs:
           envkey_GCLOUD_SERVICE_KEY_JSON: ${{ secrets.GCLOUD_SERVICE_KEY_JSON }}
           envkey_GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
           envkey_GCLOUD_REGION: ${{ secrets.GCLOUD_REGION }}
+          file_name: .env
           directory: .
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+
       - name: Login to Heroku Container registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:login
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: Build and Push Docker image on Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
