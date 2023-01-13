@@ -74,7 +74,7 @@ def create_app():
             'matches': list_matches,
             'league': get_leagues(list_matches)
         })
-
+    print(f'X_AUTH_TOKEN: {X_Auth_Token}')
     return app
 
 

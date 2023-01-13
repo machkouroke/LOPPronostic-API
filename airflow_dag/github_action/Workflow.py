@@ -10,7 +10,7 @@ import json
 
 def track_runs(runs: list[dict]) -> bool:
     last_runs: dict = runs[-1]
-    if last_runs["status"] == "error":
+    if last_runs["status"] == "Failure":
         raise WorkflowException("Erreur lors de l'execution du Run")
     return last_runs['status'] == "completed"
 
