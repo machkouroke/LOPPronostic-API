@@ -2,7 +2,7 @@ from config import GCLOUD_PROJECT_ID, GCLOUD_REGION
 from gcloud import clients, dataproc
 
 
-def sample_submit_job():
+def make_prediction(home_team: str, away_team: str):
 
     client = clients.jobClient
 
@@ -13,6 +13,11 @@ def sample_submit_job():
     job.spark_job.jar_file_uris = [
         "gs://lopprono/jar/current.jar"
       ]
+    job.spark_job.args = [
+        "prediction",
+        home_team,
+        away_team
+    ]
 
     request = dataproc.SubmitJobRequest(
         project_id=GCLOUD_PROJECT_ID,
