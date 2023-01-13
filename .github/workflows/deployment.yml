@@ -19,7 +19,7 @@ jobs:
       - name: Create .env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_X_Auth_Token: ${{ secrets.X_Auth_Token }}
+          envkey_X_AUTH_TOKEN=: ${{ secrets.X_AUTH_TOKEN= }}
           envkey_GCLOUD_CREDENTIAL_PATH: ${{ secrets.GCLOUD_CREDENTIAL_PATH }}
           envkey_GCLOUD_SERVICE_KEY_JSON: ${{ secrets.GCLOUD_SERVICE_KEY_JSON }}
           envkey_GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
@@ -32,8 +32,7 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:login
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+
       - name: Build and Push Docker image on Heroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
