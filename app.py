@@ -68,13 +68,14 @@ def create_app():
                          } for match in matches if
                         match['status'] != 'FINISHED' and match['competition']['code'] in ['PL']
                         ]
-
+        print(f'X_AUTH_TOKEN: {X_Auth_Token}')
         return jsonify({
             'success': True,
             'matches': list_matches,
-            'league': get_leagues(list_matches)
+            'league': get_leagues(list_matches),
+            'token': f'X_AUTH_TOKEN: {X_Auth_Token}'
         })
-    print(f'X_AUTH_TOKEN: {X_Auth_Token}')
+
     return app
 
 
