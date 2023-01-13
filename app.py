@@ -22,12 +22,11 @@ def create_app():
         return matches
 
     def get_leagues(matches: list):
-        leagues = []
-        for match in matches:
-            leagues.append(match['competition'])
-        unique_leagues = []
-        [unique_leagues.append(x) for x in leagues if x not in unique_leagues]
-        return unique_leagues
+        leagues = [
+            tuple(match['competition'].items()) for match in matches if match
+        ]
+
+        return [dict(value) for value in set(leagues)]
 
     def get_pronos(home_team, away_team, date, referree):
         return {}
@@ -59,21 +58,17 @@ def create_app():
     @app.route('/test')
     def test():
         matches = get_matches()
-        list_matches = []
-        for match in matches:
-            if match['status'] != 'FINISHED':
-                match_reduced = {}
-                if match['competition']['code'] in ['PL']:
-                    match_reduced.update({'competition': {'name': match['competition']['name'],
-                                                          'logo': match['competition']['emblem']},
-                                          'homeTeam': {'name': match['homeTeam']['name'],
-                                                       'logo': match['homeTeam']['crest']},
-                                          'awayTeam': {'name': match['awayTeam']['name'],
-                                                       'logo': match['awayTeam']['crest']},
-                                          'date': match['utcDate']
-                                          })
+        list_matches = [{'competition': {'name': match['competition']['name'],
+                                         'logo': match['competition']['emblem']},
+                         'homeTeam': {'name': match['homeTeam']['name'],
+                                      'logo': match['homeTeam']['crest']},
+                         'awayTeam': {'name': match['awayTeam']['name'],
+                                      'logo': match['awayTeam']['crest']},
+                         'date': match['utcDate']
+                         } for match in matches if
+                        match['status'] != 'FINISHED' and match['competition']['code'] in ['PL']
+                        ]
 
-                list_matches.append(match_reduced)
         return jsonify({
             'success': True,
             'matches': list_matches,
