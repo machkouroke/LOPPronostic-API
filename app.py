@@ -61,13 +61,13 @@ def create_app():
         matches = get_matches()
         list_matches = []
         for match in matches:
-            if not match['status'] == 'FINISHED':
+            if match['status'] != 'FINISHED':
+                match_reduced = {}
                 if match['competition']['code'] in ['PL']:
-                    match_reduced = {}
                     match_reduced.update({'competition': {'name': match['competition']['name'],
                                                           'logo': match['competition']['emblem']},
                                           'homeTeam': {'name': match['homeTeam']['name'],
-                                                          'logo': match['homeTeam']['crest']},
+                                                       'logo': match['homeTeam']['crest']},
                                           'awayTeam': {'name': match['awayTeam']['name'],
                                                        'logo': match['awayTeam']['crest']},
                                           'date': match['utcDate']

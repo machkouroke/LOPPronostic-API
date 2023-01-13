@@ -20,6 +20,10 @@ jobs:
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_X_Auth_Token: ${{ secrets.X_Auth_Token }}
+          envkey_GCLOUD_CREDENTIAL_PATH: ${{ secrets.GCLOUD_CREDENTIAL_PATH }}
+          envkey_GCLOUD_SERVICE_KEY: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          envkey_GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+          envkey_GCLOUD_REGION: ${{ secrets.GCLOUD_REGION }}
           directory: .
       - name: Login to Heroku Container registry
         env:
