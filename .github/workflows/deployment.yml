@@ -24,6 +24,7 @@ jobs:
           envkey_GCLOUD_SERVICE_KEY_JSON: ${{ secrets.GCLOUD_SERVICE_KEY_JSON }}
           envkey_GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
           envkey_GCLOUD_REGION: ${{ secrets.GCLOUD_REGION }}
+          fail_on_empty: true
           file_name: .env
           directory: .
 
