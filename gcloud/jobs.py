@@ -11,7 +11,7 @@ def sample_submit_job():
     job.placement.cluster_name = "loprono"
     job.spark_job.main_class = "org.lop.Main"
     job.spark_job.jar_file_uris = [
-        "gs://lopprono/start4.0.jar"
+        "gs://lopprono/jar/current.jar"
       ]
 
     request = dataproc.SubmitJobRequest(
