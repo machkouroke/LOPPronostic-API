@@ -25,6 +25,8 @@ jobs:
           envkey_GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
           envkey_GCLOUD_REGION: ${{ secrets.GCLOUD_REGION }}
           directory: .
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: Login to Heroku Container registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}

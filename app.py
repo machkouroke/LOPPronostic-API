@@ -1,7 +1,7 @@
 import requests
 from flask import Flask, abort, jsonify
 from flask_cors import CORS
-from config import X_Auth_Token
+from config import X_Auth_Token, GCLOUD_CREDENTIAL_PATH
 
 
 def create_app():
@@ -69,6 +69,8 @@ def create_app():
                         match['status'] != 'FINISHED' and match['competition']['code'] in ['PL']
                         ]
         print(f'X_AUTH_TOKEN: {X_Auth_Token}')
+        print(f'GCLOUD_CREDENTIAL_PATH: {GCLOUD_CREDENTIAL_PATH}')
+
         return jsonify({
             'success': True,
             'matches': list_matches,
