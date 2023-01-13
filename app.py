@@ -33,29 +33,13 @@ def create_app():
 
     @app.route('/')
     def hello_world():  # put application's code here
-        return 'Hello World!'
+        return jsonify(
+            {
+                "message": "Hello Wordl"
+            }
+        )
 
-    @app.route('/pronos', methods=['GET', 'POST'])
-    def compute_pronos():
-        try:
-            leagues, matches = get_matches()
-            all_pronos = []
-            for match in matches:
-                pronos = get_pronos(match['homeTeam']['name'], match['awayTeam']['name']
-                                    , match['utcDate'], match['referees']['name'])
-                match['homeTeam']['pronos'] = pronos['homeTeam']
-                match['awayTeam']['pronos'] = pronos['awayTeam']
-                all_pronos.append(match)
-
-            return jsonify({
-                'success': True,
-                'matches': all_pronos,
-                'leagues': leagues
-            })
-        except Exception as e:
-            abort(500, f'{type(e)}: {e}')
-
-    @app.route('/test')
+    @app.route('/prono')
     def test():
         matches = get_matches()
         list_matches = [{'competition': {'name': match['competition']['name'],
