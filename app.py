@@ -1,6 +1,7 @@
 import requests
+from flask import Flask, abort, jsonify
 from flask_cors import CORS
-from flask import Flask, render_template, abort, jsonify
+from config import X_Auth_Token
 
 
 def create_app():
@@ -15,7 +16,7 @@ def create_app():
 
     def get_matches():
         uri = 'https://api.football-data.org/v4/matches'
-        headers = {'X-Auth-Token': '3d6e6f89c3e244e4813c0c44a32fd80b'}
+        headers = {'X-Auth-Token': X_Auth_Token}
         response = requests.get(uri, headers=headers)
         matches = response.json()['matches']
         return matches
@@ -54,7 +55,6 @@ def create_app():
             })
         except Exception as e:
             abort(500, f'{type(e)}: {e}')
-            # raise e
 
     @app.route('/test')
     def test():
@@ -73,13 +73,12 @@ def create_app():
                                           'date': match['utcDate']
                                           })
 
-                    list_matches.append(match_reduced)
+                list_matches.append(match_reduced)
         return jsonify({
             'success': True,
             'matches': list_matches,
             'league': get_leagues(list_matches)
         })
-        # return render_template('test.html', leagues=leagues, matches=matches)
 
     return app
 
